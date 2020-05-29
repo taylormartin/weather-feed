@@ -1,5 +1,13 @@
 import React from "react";
 import { DateTime } from "luxon";
+import {
+  Title,
+  Text,
+  ImgInfoContainer,
+  Temp,
+  Unit,
+  Thumbnail,
+} from "./Weather.styles";
 
 export const Weather = ({ data }) => {
   const time = DateTime.local().toLocaleString(DateTime.TIME_SIMPLE);
@@ -11,12 +19,16 @@ export const Weather = ({ data }) => {
 
   return (
     <div>
-      <div>{city}</div>
-      <div>{dayOfWeek}</div>
-      <div>{time}</div>
-      <div>{conditions}</div>
-      <div>{temp}&deg;F</div>
-      <img src={imgUrl} alt="No image available" />
+      <Title>{city}</Title>
+      <Text>{dayOfWeek + " " + time}</Text>
+      <Text>{conditions}</Text>
+      <ImgInfoContainer>
+        <Thumbnail src={imgUrl} alt="No image available" />
+        <Temp>
+          {temp}
+          <Unit>&deg;F</Unit>
+        </Temp>
+      </ImgInfoContainer>
     </div>
   );
 };
