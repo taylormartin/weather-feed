@@ -14,7 +14,7 @@ const getLocationCoord = () => {
         resolve({ lat, lon });
       },
       () => {
-        reject({ error: true });
+        reject(new Error("Could not get location coordinates"));
       }
     );
   });
@@ -31,7 +31,7 @@ const getLocationData = ({ lat, lon }) => {
       const location = data.results[0].components;
       resolve({ location });
     } else {
-      reject({ error: true });
+      reject(new Error("Error fetching location data"));
     }
   });
 };
@@ -44,7 +44,7 @@ const getWeatherData = (coord) => {
       const data = await response.json();
       resolve({ data });
     } else {
-      reject({ error: true });
+      reject(new Error("Error fetching weather data"));
     }
   });
 };
@@ -56,8 +56,8 @@ export const useWeatherData = () => {
       const locationData = await getLocationData(coord);
       const weatherData = await getWeatherData(coord);
       return { location: locationData.location, data: weatherData.data };
-    } catch {
-      return { error: true };
+    } catch (err) {
+      return { error: true, message: err.message };
     }
   }, []);
 };

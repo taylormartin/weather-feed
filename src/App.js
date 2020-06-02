@@ -20,7 +20,7 @@ function App() {
       {loading ? (
         <div>loading...</div>
       ) : response.error ? (
-        <div>There was an error</div>
+        <div>{response.message}</div>
       ) : (
         <Weather data={response.data} location={response.location} />
       )}
