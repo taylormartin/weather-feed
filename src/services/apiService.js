@@ -36,17 +36,27 @@ const getLocationData = ({ lat, lon }) => {
   });
 };
 
-export const useWeatherData = () => {
-  return useAsync(async () => {
-    const { lat, lon } = await getLocationCoord();
-    const { location } = await getLocationData({ lat, lon });
-
-    const url = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${OPEN_WEATHER_API_KEY}`;
+const getWeatherData = (coord) => {
+  return new Promise(async (resolve, reject) => {
+    const url = `${BASE_URL}/weather?lat=${coord.lat}&lon=${coord.lon}&units=imperial&appid=${OPEN_WEATHER_API_KEY}`;
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      return { location, data };
+      resolve({ data });
     } else {
+      reject({ error: true });
+    }
+  });
+};
+
+export const useWeatherData = () => {
+  return useAsync(async () => {
+    try {
+      const coord = await getLocationCoord();
+      const locationData = await getLocationData(coord);
+      const weatherData = await getWeatherData(coord);
+      return { location: locationData.location, data: weatherData.data };
+    } catch {
       return { error: true };
     }
   }, []);
