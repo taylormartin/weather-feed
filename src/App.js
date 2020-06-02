@@ -22,7 +22,7 @@ function App() {
       ) : response.error ? (
         <div>There was an error</div>
       ) : (
-        <Weather data={response.data} />
+        <Weather data={response.data} location={response.location} />
       )}
     </Container>
   );
