@@ -1,5 +1,8 @@
 import React from "react";
-import { DateTime } from "luxon";
+import {
+  getCurrentTimeSimple,
+  getCurrentDayOfWeek,
+} from "../services/timeService";
 import {
   Title,
   Text,
@@ -10,8 +13,8 @@ import {
 } from "./Weather.styles";
 
 export const Weather = ({ data, location }) => {
-  const time = DateTime.local().toLocaleString(DateTime.TIME_SIMPLE);
-  const dayOfWeek = DateTime.local().weekdayLong;
+  const time = getCurrentTimeSimple();
+  const dayOfWeek = getCurrentDayOfWeek();
   const city = location.city;
   const state = location.state_code;
   const conditions = data.weather[0].main;
